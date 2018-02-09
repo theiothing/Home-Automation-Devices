@@ -8,11 +8,11 @@ In order to install ESP8266 core in arduino IDE you can see [this repository](ht
 
 Chips use MQTT protocol for communication. Herewith a link to the [library](https://github.com/knolleary/pubsubclient) which is the best and most wideley used so far.
 
-They are used hooked up to [NODE-RED](https://nodered.org/) and [HOME ASSISTANT](https://home-assistant.io/) (HA) platforms.
-The easiest way is to use HA as dashboard and main control system while I use NODE-RED for creating automations.
-To bond HA together with NODE-RED it is very easy to use specific nodes available within node red [node-red-contrib-home-assistant](https://flows.nodered.org/node/node-red-contrib-home-assistant) 
+The devices are hooked up to [NODE-RED](https://nodered.org/) and [HOME ASSISTANT](https://home-assistant.io/) (HA) platforms.
+The easiest way is to use HA as dashboard and main control system, besides automation that are implemented in NODE-RED.
+To bond HA together with NODE-RED it is very easy to use specific nodes, available in node red via NPM installation [node-red-contrib-home-assistant](https://flows.nodered.org/node/node-red-contrib-home-assistant) 
 
-By the way these devices can be used in many different ways and connected to whatever platform you prefer 
+By the way these devices can be used in many different ways and connected to whatever platform is preferred 
 
 ## Authors
 * **Marco Provolo** - *Initial work* - [marco provolo github](https://github.com/marcoprovolo)
