@@ -19,7 +19,7 @@ If the relay controls a socket or a generic load
 ```
 switch:
   platform: mqtt
-  name: "my first controlled relay"
+  name: "my_first_controlled_device"
   command_topic: "myESP/setPower" 
   state_topic: "myESP/powerSet" 
   payload_on: "ON"
@@ -32,7 +32,7 @@ If the relay controls a light then:
 ```
 light:
   platform: mqtt
-  name: "my first controlled relay"
+  name: "my_first_controlled_relay"
   command_topic: "myESP/setPower" 
   state_topic: "myESP/powerSet" 
   payload_on: "ON"
