@@ -55,7 +55,7 @@ char msg[50];
 #define COLOR_ORDER GRB
 #define LED_TYPE WS2812B
 CRGB leds[NUM_LEDS];
-//static int BRIGHTNESS = 255;
+
 
 
 /********INTERRUPT VALUES for ROTARY ENCODER********/
@@ -80,7 +80,7 @@ int ColorOLD = 30;
 
 /************ SETUP WIFI CONNECT and PRINT IP SERIAL ******************/
 void setup_wifi() {
-  bool toggle = 1;
+  bool toggle = true;
   fill_solid(leds, NUM_LEDS, CRGB::Aqua); FastLED.show();
   delay(10);
   // We start by connecting to a WiFi network
@@ -93,16 +93,12 @@ void setup_wifi() {
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
-    if (toggle == 0) {
-      fill_solid(leds, NUM_LEDS, CRGB::Black);
-      FastLED.show();
-      toggle = 1;
-    }
-    else {
-      fill_solid(leds, NUM_LEDS, CRGB::Aqua);
-      FastLED.show();
-      toggle = 0;
-    }
+      
+    if (toggle == false) fill_solid(leds, NUM_LEDS, CRGB::Black);
+    else fill_solid(leds, NUM_LEDS, CRGB::Aqua);
+    
+    FastLED.show();
+    toggle = !toggle;    
   }
 
   randomSeed(micros());
@@ -118,7 +114,8 @@ void setup_wifi() {
 
 }
 
-void callback(char* topic, byte* payload, unsigned int length) {
+/* CALLBACK has to exist BTW it's useless because we are not subscribed to any topic */
+void callback(char* topic, byte* payload, unsigned int length) {  
   Serial.print("Message arrived [");
   Serial.print(topic);
   Serial.print("] ");
@@ -131,7 +128,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
 
 void setup() {
   Serial.begin(115200);
-  Serial.println("lst's begin");
+  Serial.println("lest's begin");
 
   pinMode(encoderPin1, INPUT_PULLUP);
   pinMode(encoderPin2, INPUT_PULLUP);
@@ -143,8 +140,6 @@ void setup() {
 
   FastLED.addLeds<LED_TYPE, DATA_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection(TypicalLEDStrip);
   FastLED.setDither(0);
-
-  // fill_solid(leds, NUM_LEDS, CRGB::Orange); FastLED.show();
 
   setup_wifi();
   client.setServer(mqtt_server, 1883);  //client is now ready for use
