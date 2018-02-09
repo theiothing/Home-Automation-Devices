@@ -1,4 +1,4 @@
-![knob image](https://github.com/marcoprovolo/Home-Automation-Devices/blob/master/KnobDimmer/knob.jpg)
+![knob image](knob.jpg)
 
 ## DESCRIPTION
 This is a controller for Iot devices. It uses a rotary encoder connected to an WEMOS mini v2 board (ESP8266).
@@ -19,7 +19,7 @@ it changes mode by pressing the top of the encoder
 * a case
 
 the simple schematics is here:
-![fritzing sheme image](https://github.com/marcoprovolo/Home-Automation-Devices/blob/master/KnobDimmer/knob%20schematics.png)
+![fritzing sheme image](knob%20schematics.png)
 
 
 
