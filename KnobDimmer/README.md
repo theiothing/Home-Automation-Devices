@@ -1,7 +1,7 @@
 ![knob image](knob.jpg)
 
 ## DESCRIPTION
-This is a controller for Iot devices. It uses a rotary encoder connected to an WEMOS mini v2 board (ESP8266).
+This is a controller for IoT devices. It uses a rotary encoder connected to an WEMOS mini v2 board (ESP8266).
 here it is been programmed for controlling lights color and brightness, but can be actually used for mostly anything.
 
 It publishes :
