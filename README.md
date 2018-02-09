@@ -6,7 +6,7 @@ Most of devices here are based on ESP8266 chip (WEMOS mini proto board).
 
 In order to install ESP8266 core in arduino IDE you can see [this repository](https://github.com/esp8266/Arduino) or follow instructions [here](https://arduino-esp8266.readthedocs.io/en/2.4.0/)
 
-Chips use MQTT protocol for communication. Herewith a link to the [library](https://github.com/knolleary/pubsubclient) which is the better so far.
+Chips use MQTT protocol for communication. Herewith a link to the [library](https://github.com/knolleary/pubsubclient) which is the best and most wideley used so far.
 
 They are used hooked up to [NODE-RED](https://nodered.org/) and [HOME ASSISTANT](https://home-assistant.io/) (HA) platforms.
 The easiest way is to use HA as dashboard and main control system while I use NODE-RED for creating automations.
