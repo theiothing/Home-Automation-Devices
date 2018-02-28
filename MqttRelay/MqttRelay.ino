@@ -2,7 +2,7 @@
 
     - WiFi INITIALISAZION: as described embedded
     - MQTT stndard pubsubclient LIBRARY.
-        - reconnect() connect to the broker and SUBSRIBE to topics
+        - reconnect() connect to the broker and SUBSCRIBE to topics
         - callback() recieve the messages this client is subscribed to
     - turnON/turnOFF function
 
