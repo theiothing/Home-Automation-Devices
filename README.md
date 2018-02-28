@@ -45,14 +45,14 @@ If different it will be written in description
  ACKNOLEDGMENT TOPIC:
  
  Every time a state of an actuator changes (via MQTT or via phisical control) the MCU notifies it communicating the very same payload he recieved (if it recieved that from an MQTT communication). If you want to use it in Home assistant you should use "optimistic: FALSE".
- the criteria is the following (use CamelCase):
+ the criteria is the following (use camelCase):
 
- - {topic header}/functionSet -> command topic - subscribed to
- - {topic header}/setFunction -> status topic (confirm, or akcnoledgment topic) - publishing to
+ - {topic header}/setFunction -> command topic - subscribed to
+ - {topic header}/functionSet -> status topic (confirm, or akcnoledgment topic) - publishing to
 
 example:
- - sub topic: home/livingroom/brightnessSet
- - pub topic: home/livingroom/setBrightness
+ - sub topic: home/livingroom/setBrightness 
+ - pub topic: home/livingroom/brightnessSet
 
 ## Dependencies 
 External libraries and dependencies resources can be found inline in the code.
