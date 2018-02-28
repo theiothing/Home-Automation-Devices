@@ -58,7 +58,7 @@ example:
 External libraries and dependencies resources can be found inline in the code.
 
 ## Authors
-* **Marco Provolo** - *Initial work* - [GitHub](https://github.com/marcoprovolo)
+* **Marco Provolo** - *Initial work* - [GitHub](https://github.com/theiothing)
 
 ## Licence
 ##### Copyright (C) 2016-2018 by Marco Provolo 
