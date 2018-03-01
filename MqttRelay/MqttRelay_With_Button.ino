@@ -25,7 +25,8 @@
 
 #include <ESP8266WiFi.h>      //https://github.com/esp8266/Arduino/tree/master/libraries/ESP8266WiFi
 #include <PubSubClient.h>   //https://github.com/knolleary/pubsubclient
-
+WiFiClient espClient;                     //initialise a wifi client
+PubSubClient client(espClient);           //creates a partially initialised client instance for MQTT connection
 
 /************ WIFI and MQTT AUTENTICATION ******************/
 /****************    CUSTOMIZE THIS    *********************/
@@ -59,13 +60,11 @@ const PROGMEM bool b_PRESSED = LOW;
 #define BUTTON_MODE INPUT_PULLUP
 bool relayState = false; //defalut status @ boot - change to "true" if you want it to turn on @ boot
 
-const char* p_relayOn = "ON";
-const char* p_relayOff = "OFF";
+const PROGMEM char* p_relayOn = "ON";
+const PROGMEM char* p_relayOff = "OFF";
 
 /****************  END OF CUSTOMISATION  *********************/
 
-WiFiClient espClient;                     //initialise a wifi client
-PubSubClient client(espClient);           //creates a partially initialised client instance for MQTT connection
 uint64_t lastReconnectAttempt = 0;
 bool MQTTstatus = false;
 char msg_buff[50];                        //for storing incoming/outcoming messages
