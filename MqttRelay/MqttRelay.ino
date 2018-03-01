@@ -25,6 +25,8 @@
 
 #include <ESP8266WiFi.h>      //https://github.com/esp8266/Arduino/tree/master/libraries/ESP8266WiFi
 #include <PubSubClient.h>   //https://github.com/knolleary/pubsubclient
+WiFiClient espClient;                     //initialise a wifi client
+PubSubClient client(espClient);           //creates a partially initialised client instance for MQTT connection
 
 
 /************ WIFI and MQTT AUTENTICATION ******************/
@@ -55,13 +57,12 @@ char relayPowerPub[MAX_TOPIC_LENGTH]  = "powerSet";   //  and confirm
 #define relayPin D1  //define relay pin
 bool relayState = false; //defalut status @ boot - change to "true" if you want it to turn on @ boot
 
-const char* p_relayOn = "ON";
-const char* p_relayOff = "OFF";
+const PROGMEM char* p_relayOn = "ON";
+const PROGMEM char* p_relayOff = "OFF";
 
 /****************  END OF CUSTOMISATION  *********************/
 
-WiFiClient espClient;                     //initialise a wifi client
-PubSubClient client(espClient);           //creates a partially initialised client instance for MQTT connection
+
 char msg_buff[50];                        //for storing incoming/outcoming messages
 String topic;
 String payload;
