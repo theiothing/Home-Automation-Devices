@@ -6,13 +6,20 @@
         - callback() recieve the messages this client is subscribed to
     - turnON/turnOFF function
 
-    The IO Thing - www.theiothing.com
-    Marco P. - v 1.4 - 07/2017
-
+     this sketch is intended to be used in a SMART HOME ENVIRONMENT like:
+    HOME ASSISTANT
+    NODERED
+    OPEN HAB
+    DOMOTICZ
+    ....etc....
+    
     find more info @:
     https://github.com/theiothing/Home-Automation-Devices
-
-    if you like share (because sharing is caring)
+    
+    if you like share! (because sharing is caring)
+    
+    Copyright and stuff - The IO Thing - www.theiothing.com
+    Marco P. - v 1.5 - 05/2017
     
 */
 
