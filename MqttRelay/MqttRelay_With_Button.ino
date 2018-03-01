@@ -239,5 +239,4 @@ if (interruptEvent) Serial.print("un semplice interrupt nel loop");
   }
   
 }
-
 /****** END OF FILE ******/
