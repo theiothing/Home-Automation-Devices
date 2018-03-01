@@ -1,5 +1,5 @@
 /*  MQTT light/switch (relay control) with ESP8266 (NODEMCU - WEMOS) and MQTT
- *   WITH BUTTON (interrupt)
+     WITH BUTTON (interrupt)
 
     - WiFi INITIALISAZION: as described embedded
     - MQTT standard pubsubclient LIBRARY.
@@ -7,14 +7,20 @@
         - callback() recieve the messages this client is subscribed to
     - turnON/turnOFF function
 
-    The IO Thing - www.theiothing.com
-    Marco P. - v 1.5 - 07/2017
+    this sketch is intended to be used in a SMART HOME ENVIRONMENT like:
+    HOME ASSISTANT
+    NODERED
+    OPEN HAB
+    DOMOTICZ
+    ....etc....
 
     find more info @:
     https://github.com/theiothing/Home-Automation-Devices
 
     if you like share! (because sharing is caring)
-    
+
+    Copyright and stuff - The IO Thing - www.theiothing.com
+    Marco P. - v 1.5 - 05/2017
 */
 
 #include <ESP8266WiFi.h>      //https://github.com/esp8266/Arduino/tree/master/libraries/ESP8266WiFi
@@ -28,7 +34,7 @@
                         \||||||/
                          \||||/
                           \||/
-                           \/                             */                           
+                           \/                             */
 // WiFi Parameters
 const PROGMEM char* wifi_ssid = "[YOUR_NETWORK_NAME]";     //your WiFi name
 const PROGMEM char* wifi_password = "[YOUR_PASSWORD]";     //your WiFi password
@@ -48,21 +54,24 @@ char relayPowerPub[MAX_TOPIC_LENGTH]  = "powerSet";   //  and confirm
 
 #define relayPin D1  //define relay pin
 #define buttonPin D3 //define button pin
-const PROGMEM bool b_PRESSED = LOW; //active LOW
-
+//active LOW
+const PROGMEM bool b_PRESSED = LOW;
+#define BUTTON_MODE INPUT_PULLUP
 bool relayState = false; //defalut status @ boot - change to "true" if you want it to turn on @ boot
 
 const char* p_relayOn = "ON";
 const char* p_relayOff = "OFF";
 
 /****************  END OF CUSTOMISATION  *********************/
+
 WiFiClient espClient;                     //initialise a wifi client
 PubSubClient client(espClient);           //creates a partially initialised client instance for MQTT connection
+uint64_t lastReconnectAttempt = 0;
 bool MQTTstatus = false;
 char msg_buff[50];                        //for storing incoming/outcoming messages
 String topic;
 String payload;
-volatile uint64_t interMillis=0;
+volatile uint64_t interMillis = 0;
 volatile bool interruptEvent = false;
 
 void setup_wifi() {
@@ -82,10 +91,10 @@ void setup_wifi() {
   Serial.println(WiFi.localIP());
 }
 
-void toggleRelay(){
+void toggleRelay() {
   Serial.println("TOGGLE!");
-  if(relayState){
-    relayState = false;  
+  if (relayState) {
+    relayState = false;
   } else relayState = true;
   setRelay();
 }
@@ -108,32 +117,45 @@ void setRelay() {
   }
 }
 
-void reconnect() {
-  while (!client.connected()) {
-    Serial.print("Attempting MQTT connection...");
-    // Create a random client ID
-    String clientId = "ESP8266Client-";
-    clientId += String(random(0xffff), HEX);
-    // Attempt to connect
-    if (client.connect(clientId.c_str(), mqtt_user, mqtt_password)) {
-      Serial.println("connected. Make you things talk");
-      MQTTstatus = true;
-      // Once (re)connected (re)subscribe
-      client.subscribe(relayPowerSub);
-      publishRelay();
-      interruptEvent = false;
-    } else {
-      Serial.print("failed, rc=");
-      Serial.print(client.state());
-      Serial.println("try again in 5 seconds");
-      // Wait 5 seconds before retrying
-      delay(5000);
+bool reconnect() {
+  Serial.print("Attempting MQTT connection...");
+  // Create a random client ID
+  String clientId = "ESP8266Client-";
+  clientId += String(random(0xffff), HEX);
+  // Attempt to connect
+  if (client.connect(clientId.c_str(), mqtt_user, mqtt_password)) {
+    Serial.println("connected. Make you things talk");
+    MQTTstatus = true;
+    // Once (re)connected (re)subscribe
+    publishRelay();
+    client.subscribe(relayPowerSub);
+    interruptEvent = false;
+  }
+  return client.connected();
+}
+
+
+void nonblockingMqttReconnect() {
+  MQTTstatus = client.connected();
+  if (!MQTTstatus) {
+    uint64_t now = millis();
+    if (now - lastReconnectAttempt > 5000) {
+      Serial.println("non connesso ci provo");
+      lastReconnectAttempt = now;
+      // Attempt to reconnect
+      if (reconnect()) {
+        Serial.println("fatto!!!");
+        lastReconnectAttempt = 0;
+      }
+      else MQTTstatus = false;
     }
+  } else {
+    // Client connected
+    client.loop();    
   }
 }
 
 void callback(char* c_topic, byte* c_payload, unsigned int c_length) {
-
   for (int i = 0; i < c_length; i++) {
     msg_buff[i] = c_payload[i];
   }
@@ -148,7 +170,7 @@ void callback(char* c_topic, byte* c_payload, unsigned int c_length) {
   Serial.print("payload: [");
   Serial.print(payload);
   Serial.println("]");
-  
+
   if (topic == String(relayPowerSub)) {
     if (payload == String(p_relayOn)) {
       if (relayState != true) {
@@ -181,25 +203,24 @@ void topicComposer(char actionTopic[]) {
     Serial.println(actionTopic);
   }
 }
-void buttonInterrupt(){
+
+void buttonInterrupt() {
+  while (digitalRead(buttonPin) == b_PRESSED); //do nothing
   toggleRelay();
-  while (digitalRead(buttonPin) == b_PRESSED){
-    //do nothing
-  }
   interruptEvent = true;
 }
-
 
 void setup() {
   // put your setup code here, to run once:
   pinMode(relayPin, OUTPUT);
+  pinMode(buttonPin, BUTTON_MODE);
   Serial.begin(115200);
   Serial.println();
   digitalWrite(relayPin, LOW);
   attachInterrupt(buttonPin, buttonInterrupt, FALLING);
   Serial.print("Your relay Status topic: ");
   topicComposer(relayPowerPub);
-  Serial.print("Your relay Command topic: ");  
+  Serial.print("Your relay Command topic: ");
   topicComposer(relayPowerSub);
   setup_wifi();
   client.setServer(mqtt_server, mqtt_port);  //client is now ready for use
@@ -207,18 +228,16 @@ void setup() {
 }
 
 void loop() {
-  if (!client.connected()) {
-    MQTTstatus = false;
-    reconnect();
+  
+  nonblockingMqttReconnect();
+
+if (interruptEvent) Serial.print("un semplice interrupt nel loop");
+  
+  if (interruptEvent && MQTTstatus) {
+    publishRelay();
+    interruptEvent = false;
   }
-  if (interruptEvent && MQTTstatus){
-  publishRelay();
-  interruptEvent = false;
-  }
-  client.loop();
   
 }
-
-
 
 /****** END OF FILE ******/
