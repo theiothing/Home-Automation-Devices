@@ -13,7 +13,7 @@ Brightness:
  - sub topic: myDimmableLight/setBrightness 
  - pub topic: myDimmableLight/brightnessSet
 ```
- if headerTopic = "downstairs/livingroom/sofalight/" your power topics will be:
+ if headerTopic = "downstairs/livingroom/sofalight" your power topics will be:
 ```
 downstairs/livingroom/sofalight/setPower
 downstairs/livingroom/sofalight/powerSet
